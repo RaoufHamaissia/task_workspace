@@ -1,7 +1,7 @@
 from django import forms
 from accounts.models import Workspace, User
 
-class WorkspaceForm(forms.Form):
+class WorkspaceRegistrationForm(forms.Form):
     workspace_name = forms.CharField(
         max_length=255,
         widget=forms.TextInput(attrs={'placeholder': 'Company Name'})
