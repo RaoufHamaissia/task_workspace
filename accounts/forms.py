@@ -25,3 +25,16 @@ class WorkspaceRegistrationForm(forms.Form):
         if User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("A user with this email already exists.")
         return email
+    
+class AddMemberForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={'placeholder': 'employee@company.com'}
+    ))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Temporary Password'}
+    ))
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("This email is already associated with an existing user.")
+        return email
