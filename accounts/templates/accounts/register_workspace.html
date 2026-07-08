@@ -1,0 +1,7 @@
+<h2>Register Your Workspace / Company </h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create Workspace & Admin Account</button>
+</form>
+<p>Already have an account? <a href="{% url 'login'%}">Login here</a></p>

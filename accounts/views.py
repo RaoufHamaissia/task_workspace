@@ -20,17 +20,17 @@ def register_workspace(request):
                 )
                 
                 # Step 2: Provision the user record bound to this workspace
-                User.objects.create(
+                User.objects.create_user(     #type:ignore
                     email=form.cleaned_data['email'],
                     password=form.cleaned_data['password'],
                     workspace=new_workspace,
                     role=User.Role.WORKSPACE_ADMIN, # Automatically assigned Admin role
                 )
             return redirect('login')
-        else:
-            form = WorkspaceRegistrationForm()
+    else:
+        form = WorkspaceRegistrationForm()
             
-        return render(request, 'accounts/register_workspace.html', {'form':form})
+    return render(request, 'accounts/register_workspace.html', {'form':form})
     
     
 @login_required             #type:ignore

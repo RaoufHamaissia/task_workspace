@@ -1,0 +1,7 @@
+<h2>Add a New Employee to {{ request.user.workspace.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Provision Employee Account</button>
+</form>
+<p><a href="{% url 'workspace_dashboard' %}">Back to Dashboard</a></p>
