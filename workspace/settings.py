@@ -118,3 +118,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# Where to send users after a successful login
+LOGIN_REDIRECT_URL = 'workspace_dashboard'
+
+# Where to send users if they try to access a protected page without being logged in
+LOGIN_URL = 'login'
