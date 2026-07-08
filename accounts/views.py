@@ -54,10 +54,10 @@ def add_workspace_member(request):
             )
             return redirect('workspace_dashboard')
         
-        else:
-            form = AddMemberForm()
+    else:
+        form = AddMemberForm()
         
-        return render(request, 'accounts/add_member.html', {'form':form})
+    return render(request, 'accounts/add_member.html', {'form':form})
     
 @login_required              #type:ignore
 def workspace_dashboard(request):
@@ -71,4 +71,4 @@ def workspace_dashboard(request):
     context = {
         'team_members': team_members
     }
-    return render(request, 'accounts/workspace_dashboard.html', context)
+    return render(request, 'accounts/dashboard.html', context)
