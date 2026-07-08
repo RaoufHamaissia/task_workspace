@@ -58,3 +58,17 @@ def add_workspace_member(request):
             form = AddMemberForm()
         
         return render(request, 'accounts/add_member.html', {'form':form})
+    
+    @login_required              #type:ignore
+    def workspace_dashboard(request):
+        # Fetch all users belonging strictly to the logged-in user's workspace
+        # If it's a global admin, request user.workspace will be None, and we can handle that case separately.
+        if request.user.workspace:
+            team_members = User.objects.filter(workspace=request.user.workspace)
+        else:
+            team_members = User.objects.all() # Global Admin can see all users across workspaces
+            
+        context = {
+            'team_members': team_members
+        }
+        return render(request, 'accounts/workspace_dashboard.html', context)
