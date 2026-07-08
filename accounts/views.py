@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.db import transaction
-from accounts.forms import WorkspaceRegistrationForm
+from accounts.forms import WorkspaceRegistrationForm, AddMemberForm
 from accounts.models import Workspace, User
-from task_workspace import workspace
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+
 
 
 # Create your views here.
@@ -31,3 +33,28 @@ def register_workspace(request):
         return render(request, 'accounts/register_workspace.html', {'form':form})
     
     
+@login_required             #type:ignore
+def add_workspace_member(request):
+    # Strict Authorization Boundary Check
+    if request.user.role != User.Role.WORKSPACE_ADMIN:
+        raise PermissionDenied("Only Workspace Administrators (HR/IT) can create new member accounts.")
+    
+    if request.method == 'POST':
+        form = AddMemberForm(request.POST)
+        if form.is_valid():
+            # The multi-tenant Security Core:
+            # Fore the new account into the current logged-in Admin's workspace.
+            admin_workspace = request.user.workspace
+            
+            User.objects.create_user(                       #type:ignore
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                workspace=admin_workspace, # Inherited directly from session tracking
+                role=User.Role.MEMBER  # Regular employee status
+            )
+            return redirect('workspace_dashboard')
+        
+        else:
+            form = AddMemberForm()
+        
+        return render(request, 'accounts/add_member.html', {'form':form})
