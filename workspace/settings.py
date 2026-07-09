@@ -124,3 +124,6 @@ LOGIN_REDIRECT_URL = 'workspace_dashboard'
 
 # Where to send users if they try to access a protected page without being logged in
 LOGIN_URL = 'login'
+
+# Where to send users after they log out
+LOGOUT_REDIRECT_URL = 'login'
